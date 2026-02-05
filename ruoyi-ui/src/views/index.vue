@@ -2,248 +2,216 @@
   <div>
     <div v-if="isAdmin" class="admin-dashboard">
       <!-- 管理员仪表盘 -->
-      <div class="dashboard-header">
-        <div class="welcome-text">
-          <h2>欢迎回来，管理员</h2>
-          <p>今天是 {{ currentDate }}</p>
+      <div class="admin-header">
+        <div class="admin-welcome">
+          <div class="welcome-icon">
+            <i class="el-icon-s-custom"></i>
+          </div>
+          <div class="welcome-info">
+            <h2>欢迎回来，管理员</h2>
+            <p>{{ currentDate }}</p>
+          </div>
         </div>
       </div>
 
-      <!-- 动画展示区域 -->
-      <el-row :gutter="20" class="animation-area">
-        <el-col :span="12">
-          <el-card class="animation-card" :body-style="{ padding: '0' }">
-            <div class="floating-text">
-              <span>系统管理</span>
-            </div>
-          </el-card>
-        </el-col>
-        <el-col :span="12">
-          <el-card class="animation-card" :body-style="{ padding: '0' }">
-            <div class="floating-text">
-              <span>信息维护</span>
-            </div>
-          </el-card>
-        </el-col>
-      </el-row>
-
-      <!-- 快速操作区域 -->
+      <!-- 快速操作和通知区域 -->
       <el-row :gutter="20" class="quick-actions">
         <el-col :span="12">
           <el-card class="action-card">
-            <div slot="header" class="clearfix">
+            <div slot="header" class="card-header">
+              <i class="el-icon-s-operation"></i>
               <span>快速操作</span>
             </div>
-            <div class="custom-buttons">
-              <div class="custom-button primary-button" @click="handleQuickAction('add')">
-                <i class="el-icon-edit"></i>
+            <div class="action-buttons">
+              <div class="action-btn btn-blue" @click="handleQuickAction('add')">
+                <i class="el-icon-edit-outline"></i>
                 <span>新增信息</span>
               </div>
-              <div class="custom-button success-button" @click="handleQuickAction('view')">
-                <i class="el-icon-view"></i>
+              <div class="action-btn btn-green" @click="handleQuickAction('view')">
+                <i class="el-icon-pie-chart"></i>
                 <span>查看统计</span>
               </div>
-              <div class="custom-button warning-button" @click="handleQuickAction('settings')">
+              <div class="action-btn btn-orange" @click="handleQuickAction('settings')">
                 <i class="el-icon-setting"></i>
                 <span>系统设置</span>
+              </div>
+              <div class="action-btn btn-purple" @click="goToPage('/system/user')">
+                <i class="el-icon-user"></i>
+                <span>用户管理</span>
               </div>
             </div>
           </el-card>
         </el-col>
         <el-col :span="12">
           <el-card class="notice-card">
-            <div slot="header" class="clearfix">
+            <div slot="header" class="card-header">
+              <i class="el-icon-bell"></i>
               <span>最新通知</span>
             </div>
-            <el-timeline>
-              <el-timeline-item
-                v-for="(notice, index) in recentNotices"
-                :key="index"
-                :timestamp="notice.createTime"
-                :type="notice.type"
-              >
-                {{ notice.title }}
-              </el-timeline-item>
-            </el-timeline>
+            <div class="notice-timeline">
+              <el-timeline>
+                <el-timeline-item
+                  v-for="(notice, index) in recentNotices"
+                  :key="index"
+                  :timestamp="notice.createTime"
+                  placement="top"
+                >
+                  <div class="timeline-content">{{ notice.noticeTitle || notice.title }}</div>
+                </el-timeline-item>
+              </el-timeline>
+            </div>
           </el-card>
         </el-col>
       </el-row>
     </div>
 
     <!-- 普通用户视图 -->
-    <div v-else>
-    <div ref="echartsText" style="height: 100px; display: flex; justify-content: center; align-items: center;">
-      <!-- 这里 ECharts 动画文本会被渲染 -->
-    </div>
-    <div>
-      <el-row>
-        <el-col :span="18">
-          <el-card style="margin-right: 20px; height: 340px;">
-            <el-carousel :interval="4000" type="card" height="300px">
-              <el-carousel-item>
-                <a href="https://www.hit.edu.cn/" target="_blank">
-                  <img src="../assets/images/01.jpg" alt="Image 1" style="width: 100%;">
-                </a>
-              </el-carousel-item>
-              <el-carousel-item>
-                <a href="https://www.ustb.edu.cn/" target="_blank">
-                  <img src="../assets/images/02.jpg" alt="Image 2" style="width: 100%;">
-                </a>
-              </el-carousel-item>
-              <el-carousel-item>
-                <a href="https://www.xjtu.edu.cn/" target="_blank">
-                  <img src="../assets/images/03.jpg" alt="Image 3" style="width: 100%;">
-                </a>
-              </el-carousel-item>
-            </el-carousel>
-          </el-card>
-        </el-col>
-        <el-col :span="6">
-          <el-card style="margin-right: 20px; height: 340px;" class="mbti-card">
-            <div class="mbti-content">
-              <div class="mbti-image">
-                <img src="../assets/images/04.jpg" alt="MBTI测试" style="width: 100%; height: 100%; object-fit: cover;">
-              </div>
-              <div class="mbti-overlay">
-                <h3>MBTI 性格测试</h3>
-                <p>了解你的性格类型</p>
-                <el-button 
-                  type="primary" 
-                  class="mbti-button"
-                  @click="openMbtiTest"
-                >
-                  开始测试
-                </el-button>
-              </div>
-            </div>
-          </el-card>
-        </el-col>
-      </el-row>
-      <!-- 通知公告 -->
-      <el-row style="margin-top: 20px;">
-        <el-col :span="12">
-          <el-card style="margin-right: 20px; height: 420px;" class="notice-list-card">
-            <div slot="header" class="intro-header">
-              <h3>通知公告</h3>
-              <div class="intro-divider"></div>
-            </div>
-            <div class="notice-content">
-              <el-table 
-                v-loading="loading" 
-                :data="noticeList"
-                :header-cell-style="{
-                  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                  color: 'white',
-                  fontWeight: 'bold'
-                }"
-                class="notice-table"
-              >
-                <el-table-column 
-                  label="序号" 
-                  align="center" 
-                  prop="noticeId" 
-                  width="80"
-                >
-                  <template slot-scope="scope">
-                    <div class="notice-id">{{ scope.row.noticeId }}</div>
-                  </template>
-                </el-table-column>
-                <el-table-column
-                  label="公告标题"
-                  align="left"
-                  prop="noticeTitle"
-                  :show-overflow-tooltip="true"
-                >
-                  <template slot-scope="scope">
-                    <div class="notice-title" @click="showNoticeContent(scope.row)">
-                      <i class="el-icon-bell notice-icon"></i>
-                      <span>{{ scope.row.noticeTitle }}</span>
-                    </div>
-                  </template>
-                </el-table-column>
-                <el-table-column 
-                  label="公告类型" 
-                  align="center" 
-                  prop="noticeType" 
-                  width="100"
-                >
-                  <template slot-scope="scope">
-                    <el-tag 
-                      :class="['notice-type-tag', 
-                        scope.row.noticeType === '1' ? 'type-notice' : 'type-announcement']"
-                    >
-                      <i :class="scope.row.noticeType === '1' ? 'el-icon-bell' : 'el-icon-message'"></i>
-                      {{ scope.row.noticeType === '1' ? '通知' : '公告' }}
-                    </el-tag>
-                  </template>
-                </el-table-column>
-                <el-table-column 
-                  label="发布时间" 
-                  align="center" 
-                  prop="createTime" 
-                  width="100"
-                >
-                  <template slot-scope="scope">
-                    <div class="notice-time">
-                      {{ parseTime(scope.row.createTime, '{y}-{m}-{d}') }}
-                    </div>
-                  </template>
-                </el-table-column>
-              </el-table>
-            </div>
-          </el-card>
-        </el-col>
+    <div v-else class="user-dashboard">
+      <!-- 新title样式 -->
+      <div class="page-title-section">
+        <div class="title-content">
+          <div class="title-icon">
+            <i class="el-icon-s-opportunity"></i>
+          </div>
+          <div class="title-text">
+            <h1>高考志愿个性化推荐系统</h1>
+            <p class="title-desc">智能分析 · 精准推荐 · 助力圆梦</p>
+          </div>
+        </div>
+        <div class="title-decoration"></div>
+      </div>
 
-        <el-col :span="12">
-          <el-card style="margin-right: 20px; height: 420px;" class="system-intro-card">
-            <div slot="header" class="intro-header">
-              <h3>系统简介</h3>
-              <div class="intro-divider"></div>
+      <div class="dashboard-content">
+        <!-- 轮播图和MBTI测试区域 -->
+        <el-row :gutter="20" class="top-section">
+          <el-col :span="18">
+            <el-card class="carousel-card" :body-style="{ padding: '0' }">
+              <el-carousel :interval="4000" type="card" height="300px">
+                <el-carousel-item>
+                  <a href="https://www.hit.edu.cn/" target="_blank">
+                    <img src="../assets/images/01.jpg" alt="Image 1" style="width: 100%;">
+                  </a>
+                </el-carousel-item>
+                <el-carousel-item>
+                  <a href="https://www.ustb.edu.cn/" target="_blank">
+                    <img src="../assets/images/02.jpg" alt="Image 2" style="width: 100%;">
+                  </a>
+                </el-carousel-item>
+                <el-carousel-item>
+                  <a href="https://www.xjtu.edu.cn/" target="_blank">
+                    <img src="../assets/images/03.jpg" alt="Image 3" style="width: 100%;">
+                  </a>
+                </el-carousel-item>
+              </el-carousel>
+            </el-card>
+          </el-col>
+          <el-col :span="6">
+            <el-card class="mbti-card" :body-style="{ padding: '0', height: '100%' }">
+              <div class="mbti-content">
+                <div class="mbti-image">
+                  <img src="../assets/images/04.jpg" alt="MBTI测试" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+                <div class="mbti-overlay">
+                  <h3>MBTI 性格测试</h3>
+                  <p>了解你的性格类型</p>
+                  <el-button
+                    type="primary"
+                    class="mbti-button"
+                    @click="openMbtiTest"
+                  >
+                    开始测试
+                  </el-button>
+                </div>
+              </div>
+            </el-card>
+          </el-col>
+        </el-row>
+
+        <!-- 推荐内容展示区域 -->
+        <div class="recommend-section" style="margin-top: 20px;">
+          <div class="recommend-header-bar">
+            <div class="header-left">
+              <i class="el-icon-star-on"></i>
+              <span class="header-title">为您推荐</span>
+              <span class="header-subtitle">基于您的个人情况精选</span>
             </div>
-            <div class="system-intro-content">
-              <div class="intro-section">
-                <div class="intro-icon">
-                  <i class="el-icon-aim"></i>
+          </div>
+          <div class="recommend-body">
+            <el-skeleton :loading="loadingRecommend" animated :rows="2">
+              <template slot="default">
+                <el-row :gutter="12" v-if="recommendedMajors.length > 0">
+                  <el-col :span="6" v-for="(item, index) in recommendedMajors" :key="index">
+                    <el-card class="recommend-item-card" shadow="hover">
+                      <div class="card-rank">{{ index + 1 }}</div>
+                      <div class="card-body">
+                        <div class="card-university">{{ item.universityName }}</div>
+                        <div class="card-major">{{ item.majorName }}</div>
+                      </div>
+                      <div class="card-footer">
+                        <span class="score-label">2024分数线</span>
+                        <span class="score-value">{{ item.minScore2024 }}分</span>
+                      </div>
+                    </el-card>
+                  </el-col>
+                </el-row>
+                <div v-else class="no-recommend">
+                  <i class="el-icon-warning-outline"></i>
+                  <p>暂无推荐数据，请先完善个人信息</p>
                 </div>
-                <div class="intro-text">
-                  <h4>智能推荐</h4>
-                  <p>基于内容的推荐算法和协同过滤推挤算法，为考生提供个性化的高校和专业推荐，助力精准志愿填报。</p>
+              </template>
+            </el-skeleton>
+          </div>
+        </div>
+
+        <!-- 系统功能介绍 -->
+        <el-row :gutter="20" style="margin-top: 20px;">
+          <el-col :span="24">
+            <el-card class="feature-card">
+              <div slot="header" class="section-header">
+                <i class="el-icon-s-grid"></i>
+                <span>系统功能</span>
+              </div>
+              <div class="feature-grid">
+                <div class="feature-item" @click="goToPage('/university/information')">
+                  <div class="feature-icon">
+                    <i class="el-icon-school"></i>
+                  </div>
+                  <div class="feature-text">
+                    <h4>院校查询</h4>
+                    <p>全国高校信息一站式查询</p>
+                  </div>
+                </div>
+                <div class="feature-item" @click="goToPage('/university/major')">
+                  <div class="feature-icon">
+                    <i class="el-icon-reading"></i>
+                  </div>
+                  <div class="feature-text">
+                    <h4>专业探索</h4>
+                    <p>深入了解各类专业详情</p>
+                  </div>
+                </div>
+                <div class="feature-item" @click="goToPage('/university/chinaMap')">
+                  <div class="feature-icon">
+                    <i class="el-icon-map-location"></i>
+                  </div>
+                  <div class="feature-text">
+                    <h4>地图分布</h4>
+                    <p>可视化查看院校地理分布</p>
+                  </div>
+                </div>
+                <div class="feature-item" @click="goToPage('/university/feedback')">
+                  <div class="feature-icon">
+                    <i class="el-icon-magic-stick"></i>
+                  </div>
+                  <div class="feature-text">
+                    <h4>问题反馈</h4>
+                    <p>系统问题及时反馈</p>
+                  </div>
                 </div>
               </div>
-              
-              <div class="intro-section">
-                <div class="intro-icon">
-                  <i class="el-icon-data-analysis"></i>
-                </div>
-                <div class="intro-text">
-                  <h4>数据分析</h4>
-                  <p>整合历年高考数据，结合院校特色、专业优势、就业前景等多维度信息，提供全面的决策支持。</p>
-                </div>
-              </div>
-              
-              <div class="intro-section">
-                <div class="intro-icon">
-                  <i class="el-icon-user"></i>
-                </div>
-                <div class="intro-text">
-                  <h4>个性匹配</h4>
-                  <p>通过MBTI性格测试和兴趣评估，帮助考生找到最适合自己的专业方向和职业发展路径。</p>
-                </div>
-              </div>
-              
-              <div class="intro-section">
-                <div class="intro-icon">
-                  <i class="el-icon-connection"></i>
-                </div>
-                <div class="intro-text">
-                  <h4>信息共享</h4>
-                  <p>提供院校库、专业库等丰富的信息资源，助力考生和家长做出更明智的选择。</p>
-                </div>
-              </div>
-            </div>
-          </el-card>
-        </el-col>
-      </el-row>
+            </el-card>
+          </el-col>
+        </el-row>
       </div>
     </div>
 
@@ -257,6 +225,7 @@
 
 <script>
 import {listNotice, getNotice} from "@/api/system/notice";
+import {recommendMajors} from "@/api/university/recommendation";
 import * as echarts from 'echarts'
 
 export default {
@@ -290,6 +259,9 @@ export default {
       },
       showNoticeDialog: false,
       form: {},
+      // 推荐数据
+      loadingRecommend: false,
+      recommendedMajors: [],
       rules: {
         noticeTitle: [
           {required: true, message: "公告标题不能为空", trigger: "blur"}
@@ -304,6 +276,7 @@ export default {
     this.getList();
     this.getInfo();
     this.setCurrentDate();
+    this.fetchRecommendedMajors();
   },
   mounted() {
     this.initEchartsText();
@@ -409,7 +382,7 @@ export default {
       try {
         const url = 'https://www.16personalities.com/ch/人格测试';
         const newWindow = window.open(url, '_blank');
-        
+
         // 检查是否被浏览器阻止弹窗
         if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
           // 如果弹窗被阻止，提示用户手动打开
@@ -419,7 +392,7 @@ export default {
             duration: 5000,
             showClose: true
           });
-          
+
           // 同时尝试复制链接到剪贴板
           this.copyToClipboard(url);
         }
@@ -453,122 +426,528 @@ export default {
         console.error('复制失败:', error);
       }
       document.body.removeChild(textarea);
+    },
+    goToPage(path) {
+      this.$router.push(path);
+    },
+    // 获取推荐专业
+    fetchRecommendedMajors() {
+      if (this.isAdmin) return; // 管理员不需要获取推荐数据
+      this.loadingRecommend = true;
+      recommendMajors()
+        .then((response) => {
+          this.recommendedMajors = response.data || [];
+        })
+        .catch(() => {
+          this.recommendedMajors = [];
+        })
+        .finally(() => {
+          this.loadingRecommend = false;
+        });
     }
   }
 };
 </script>
 
 <style scoped lang="scss">
+/* ========== 管理员首页样式 ========== */
 .admin-dashboard {
   padding: 20px;
+  background: #f5f7fa;
+  min-height: calc(100vh - 84px);
 
-  .dashboard-header {
-    margin-bottom: 30px;
+  .admin-header {
+    margin-bottom: 24px;
 
-    .welcome-text {
-      h2 {
-        margin: 0;
-        font-size: 24px;
-        color: #303133;
-      }
+    .admin-welcome {
+      display: flex;
+      align-items: center;
+      padding: 24px;
+      background: #fff;
+      border: 1px solid #e4e7ed;
 
-      p {
-        margin: 10px 0 0;
-        color: #909399;
-      }
-    }
-  }
+      .welcome-icon {
+        width: 60px;
+        height: 60px;
+        background: #1a5fb4;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 20px;
 
-  .animation-area {
-    margin-bottom: 30px;
-
-    .animation-card {
-      height: 200px;
-      overflow: hidden;
-      position: relative;
-      transition: all 0.3s;
-
-      &:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-
-        .floating-text {
-          transform: scale(1.1);
+        i {
+          font-size: 28px;
+          color: #fff;
         }
       }
 
-      .floating-text {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        font-size: 32px;
-        font-weight: bold;
-        color: #409EFF;
-        transition: all 0.3s;
-        animation: float 3s ease-in-out infinite;
+      .welcome-info {
+        h2 {
+          margin: 0 0 8px 0;
+          font-size: 22px;
+          color: #303133;
+          font-weight: 600;
+        }
+
+        p {
+          margin: 0;
+          color: #909399;
+          font-size: 14px;
+        }
       }
     }
   }
 
   .quick-actions {
     .action-card, .notice-card {
-      height: 300px;
-      
-      .custom-buttons {
+      height: 320px;
+      border: 1px solid #e4e7ed;
+
+      .card-header {
         display: flex;
-        flex-direction: column;
+        align-items: center;
+        font-size: 16px;
+        font-weight: 600;
+        color: #303133;
+
+        i {
+          margin-right: 8px;
+          color: #1a5fb4;
+        }
+      }
+    }
+
+    .action-card {
+      .action-buttons {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
         gap: 16px;
-        padding: 20px;
-        
-        .custom-button {
-          width: 100%;
-          height: 40px;
-          border-radius: 4px;
+        padding: 10px;
+
+        .action-btn {
           display: flex;
+          flex-direction: column;
           align-items: center;
           justify-content: center;
-          color: white;
-          font-size: 16px;
+          padding: 20px;
           cursor: pointer;
-          transition: all 0.3s;
-          
-          &:hover {
-            opacity: 0.8;
-          }
-          
+          transition: all 0.2s ease;
+
           i {
-            margin-right: 8px;
-            font-size: 16px;
+            font-size: 28px;
+            color: #fff;
+            margin-bottom: 10px;
           }
+
+          span {
+            font-size: 14px;
+            color: #fff;
+            font-weight: 500;
+          }
+
+          &:hover {
+            opacity: 0.85;
+            transform: translateY(-2px);
+          }
+
+          &.btn-blue { background: #1a5fb4; }
+          &.btn-green { background: #26a269; }
+          &.btn-orange { background: #e5a50a; }
+          &.btn-purple { background: #613583; }
         }
-        
-        .primary-button {
-          background-color: #409EFF;
-        }
-        
-        .success-button {
-          background-color: #67C23A;
-        }
-        
-        .warning-button {
-          background-color: #E6A23C;
+      }
+    }
+
+    .notice-card {
+      .notice-timeline {
+        padding: 10px;
+        height: calc(100% - 60px);
+        overflow-y: auto;
+
+        .timeline-content {
+          font-size: 14px;
+          color: #606266;
         }
       }
     }
   }
 }
 
-@keyframes float {
-  0% {
-    transform: translate(-50%, -50%) translateY(0);
+/* ========== 普通用户首页样式 ========== */
+.user-dashboard {
+  padding: 20px;
+  background: #f5f7fa;
+  min-height: calc(100vh - 84px);
+}
+
+.page-title-section {
+  margin-bottom: 24px;
+  padding: 30px;
+  background: #fff;
+  border: 1px solid #e4e7ed;
+  position: relative;
+
+  .title-content {
+    display: flex;
+    align-items: center;
+
+    .title-icon {
+      width: 64px;
+      height: 64px;
+      background: #1a5fb4;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 24px;
+
+      i {
+        font-size: 32px;
+        color: #fff;
+      }
+    }
+
+    .title-text {
+      h1 {
+        margin: 0 0 8px 0;
+        font-size: 28px;
+        color: #303133;
+        font-weight: 700;
+        letter-spacing: 2px;
+      }
+
+      .title-desc {
+        margin: 0;
+        font-size: 14px;
+        color: #909399;
+        letter-spacing: 4px;
+      }
+    }
   }
-  50% {
-    transform: translate(-50%, -50%) translateY(-10px);
+
+  .title-decoration {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: #1a5fb4;
   }
-  100% {
-    transform: translate(-50%, -50%) translateY(0);
+}
+
+.top-section {
+  .carousel-card {
+    height: 340px;
+    border: 1px solid #e4e7ed;
+    overflow: hidden;
+
+    ::v-deep .el-carousel__item {
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
   }
+
+  .mbti-card {
+    height: 340px;
+    border: 1px solid #e4e7ed;
+    overflow: hidden;
+
+    &:hover {
+      .mbti-overlay {
+        opacity: 1;
+      }
+    }
+
+    .mbti-content {
+      position: relative;
+      height: 300px;
+      width: 100%;
+    }
+
+    .mbti-image {
+      height: 100%;
+      width: 100%;
+      overflow: hidden;
+
+      img {
+        transition: transform 0.3s ease;
+      }
+
+      &:hover img {
+        transform: scale(1.05);
+      }
+    }
+
+    .mbti-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.75);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      transition: all 0.3s ease;
+      color: white;
+      padding: 20px;
+
+      h3 {
+        font-size: 22px;
+        margin-bottom: 10px;
+        font-weight: 600;
+      }
+
+      p {
+        font-size: 14px;
+        margin-bottom: 20px;
+        color: rgba(255, 255, 255, 0.8);
+      }
+
+      .mbti-button {
+        background: #1a5fb4;
+        border: none;
+        padding: 10px 24px;
+        font-size: 14px;
+
+        &:hover {
+          background: #1c71d8;
+        }
+      }
+    }
+  }
+}
+
+.recommend-section {
+  .recommend-header-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    background: #fff;
+    border: 1px solid #e4e7ed;
+    border-bottom: none;
+    
+    .header-left {
+      display: flex;
+      align-items: center;
+      
+      i {
+        color: #1a5fb4;
+        font-size: 18px;
+        margin-right: 8px;
+      }
+      
+      .header-title {
+        font-size: 16px;
+        font-weight: 600;
+        color: #303133;
+      }
+      
+      .header-subtitle {
+        margin-left: 12px;
+        font-size: 13px;
+        color: #909399;
+      }
+    }
+  }
+  
+  .recommend-body {
+    padding: 16px;
+    background: #fff;
+    border: 1px solid #e4e7ed;
+  }
+  
+  .recommend-item-card {
+    position: relative;
+    border: 1px solid #e4e7ed;
+    margin-bottom: 12px;
+    
+    ::v-deep .el-card__body {
+      padding: 12px;
+    }
+    
+    .card-rank {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 24px;
+      height: 24px;
+      background: #1a5fb4;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    
+    .card-body {
+      padding-left: 16px;
+      
+      .card-university {
+        font-size: 12px;
+        color: #606266;
+        margin-bottom: 4px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      
+      .card-major {
+        font-size: 14px;
+        color: #303133;
+        font-weight: 600;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+    
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 10px;
+      padding-top: 8px;
+      border-top: 1px solid #ebeef5;
+      
+      .score-label {
+        font-size: 11px;
+        color: #909399;
+      }
+      
+      .score-value {
+        font-size: 14px;
+        font-weight: 700;
+        color: #c01c28;
+      }
+    }
+  }
+  
+  .no-recommend {
+    text-align: center;
+    padding: 30px 20px;
+    color: #909399;
+
+    i {
+      font-size: 36px;
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    p {
+      margin: 0;
+      font-size: 14px;
+    }
+  }
+}
+
+.feature-card {
+  border: 1px solid #e4e7ed;
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    font-weight: 600;
+    color: #303133;
+
+    i {
+      margin-right: 8px;
+      color: #1a5fb4;
+      font-size: 18px;
+    }
+  }
+
+  .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    padding: 10px;
+
+    .feature-item {
+      display: flex;
+      align-items: center;
+      padding: 20px;
+      background: #f5f7fa;
+      border: 1px solid #e4e7ed;
+      cursor: pointer;
+      transition: all 0.2s ease;
+
+      &:hover {
+        background: #e8f4ff;
+        border-color: #1a5fb4;
+
+        .feature-icon {
+          background: #1a5fb4;
+
+          i {
+            color: #fff;
+          }
+        }
+      }
+
+      .feature-icon {
+        width: 48px;
+        height: 48px;
+        background: #fff;
+        border: 1px solid #e4e7ed;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 16px;
+        transition: all 0.2s ease;
+
+        i {
+          font-size: 24px;
+          color: #1a5fb4;
+          transition: all 0.2s ease;
+        }
+      }
+
+      .feature-text {
+        h4 {
+          margin: 0 0 4px 0;
+          font-size: 15px;
+          color: #303133;
+          font-weight: 600;
+        }
+
+        p {
+          margin: 0;
+          font-size: 12px;
+          color: #909399;
+        }
+      }
+    }
+  }
+}
+
+/* ========== 公共样式 ========== */
+::v-deep .el-card {
+  border-radius: 0;
+
+  .el-card__header {
+    border-bottom: 1px solid #e4e7ed;
+    padding: 16px 20px;
+  }
+}
+
+::v-deep .el-button {
+  border-radius: 0;
+}
+
+::v-deep .el-tag {
+  border-radius: 0;
+}
+
+::v-deep .el-timeline-item__node {
+  border-radius: 0;
 }
 
 .notice-content::v-deep img {
@@ -576,302 +955,5 @@ export default {
   height: auto;
   display: block;
   margin: 0 auto;
-}
-
-.mbti-card {
-  overflow: hidden;
-  transition: all 0.3s ease;
-  
-  &:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-    
-    .mbti-overlay {
-      opacity: 1;
-    }
-  }
-}
-
-.mbti-content {
-  position: relative;
-  height: 100%;
-  width: 100%;
-}
-
-.mbti-image {
-  height: 100%;
-  width: 100%;
-  overflow: hidden;
-  
-  img {
-    transition: transform 0.3s ease;
-  }
-  
-  &:hover img {
-    transform: scale(1.05);
-  }
-}
-
-.mbti-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.7);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  opacity: 0;
-  transition: all 0.3s ease;
-  color: white;
-  padding: 20px;
-  
-  h3 {
-    font-size: 24px;
-    margin-bottom: 10px;
-    font-weight: 600;
-  }
-  
-  p {
-    font-size: 16px;
-    margin-bottom: 20px;
-    color: rgba(255, 255, 255, 0.8);
-  }
-}
-
-.mbti-button {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border: none;
-  padding: 10px 25px;
-  font-size: 16px;
-  border-radius: 25px;
-  transition: all 0.3s ease;
-  
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(118, 75, 162, 0.4);
-  }
-  
-  &:active {
-    transform: translateY(0);
-  }
-}
-
-.system-intro-card, .notice-list-card {
-  .intro-header {
-    position: relative;
-    text-align: center;
-    padding-bottom: 15px;
-    margin-bottom: 20px;
-
-    h3 {
-      font-size: 22px;
-      color: #303133;
-      margin: 0;
-      font-weight: 600;
-    }
-
-    .intro-divider {
-      position: absolute;
-      bottom: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 60px;
-      height: 3px;
-      background: linear-gradient(90deg, #667eea, #764ba2);
-      border-radius: 3px;
-    }
-  }
-}
-
-.system-intro-card {
-  .system-intro-content {
-    padding: 10px;
-    height: calc(100% - 60px);
-    overflow-y: auto;
-
-    &::-webkit-scrollbar {
-      width: 6px;
-    }
-
-    &::-webkit-scrollbar-thumb {
-      background: #dcdfe6;
-      border-radius: 3px;
-    }
-  }
-
-  .intro-section {
-    display: flex;
-    align-items: flex-start;
-    margin-bottom: 25px;
-    padding: 15px;
-    border-radius: 8px;
-    transition: all 0.3s ease;
-    
-    &:hover {
-      background: rgba(102, 126, 234, 0.05);
-      transform: translateX(5px);
-    }
-
-    .intro-icon {
-      flex-shrink: 0;
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-right: 15px;
-      
-      i {
-        font-size: 20px;
-        color: white;
-      }
-    }
-
-    .intro-text {
-      flex-grow: 1;
-
-      h4 {
-        margin: 0 0 8px 0;
-        font-size: 16px;
-        color: #303133;
-      }
-
-      p {
-        margin: 0;
-        font-size: 14px;
-        color: #606266;
-        line-height: 1.6;
-      }
-    }
-  }
-}
-
-.notice-list-card {
-  .notice-content {
-    height: calc(100% - 60px);
-    overflow-y: auto;
-    
-    &::-webkit-scrollbar {
-      width: 6px;
-    }
-    
-    &::-webkit-scrollbar-thumb {
-      background: #dcdfe6;
-      border-radius: 3px;
-    }
-  }
-
-  .notice-table {
-    ::v-deep .el-table__header-wrapper {
-      th {
-        padding: 8px 0;
-        
-        .cell {
-          font-size: 14px;
-        }
-      }
-    }
-    
-    ::v-deep .el-table__body-wrapper {
-      tr {
-        transition: all 0.3s ease;
-        
-        &:hover {
-          background-color: rgba(102, 126, 234, 0.05) !important;
-          transform: translateX(5px);
-        }
-      }
-    }
-  }
-
-  .notice-id {
-    font-weight: bold;
-    color: #606266;
-  }
-
-  .notice-title {
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-    padding: 5px 0;
-    transition: all 0.3s ease;
-    
-    .notice-icon {
-      color: #764ba2;
-      margin-right: 8px;
-      font-size: 16px;
-    }
-    
-    span {
-      color: #303133;
-      
-      &:hover {
-        color: #764ba2;
-      }
-    }
-  }
-
-  .notice-time {
-    font-size: 13px;
-    color: #909399;
-  }
-
-  .notice-type-tag {
-    display: inline-flex;
-    align-items: center;
-    padding: 4px 12px;
-    border-radius: 15px;
-    border: none;
-    font-size: 12px;
-    font-weight: 500;
-    transition: all 0.3s ease;
-    
-    i {
-      margin-right: 4px;
-      font-size: 14px;
-    }
-    
-    &.type-notice {
-      background: linear-gradient(45deg, #36d1dc, #5b86e5);
-      color: white;
-      box-shadow: 0 2px 6px rgba(91, 134, 229, 0.3);
-      
-      &:hover {
-        transform: translateY(-1px);
-        box-shadow: 0 4px 8px rgba(91, 134, 229, 0.4);
-      }
-    }
-    
-    &.type-announcement {
-      background: linear-gradient(45deg, #ff9a9e, #fad0c4);
-      color: white;
-      box-shadow: 0 2px 6px rgba(255, 154, 158, 0.3);
-      
-      &:hover {
-        transform: translateY(-1px);
-        box-shadow: 0 4px 8px rgba(255, 154, 158, 0.4);
-      }
-    }
-  }
-
-  ::v-deep .el-tag {
-    background-color: transparent;
-    border: none;
-    color: inherit;
-    
-    .el-tag__close {
-      color: white;
-      
-      &:hover {
-        background-color: rgba(255, 255, 255, 0.2);
-        color: white;
-      }
-    }
-  }
 }
 </style>

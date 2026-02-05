@@ -171,48 +171,40 @@ export default {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background-image: url('~@/assets/images/login-background.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   position: relative;
   overflow: hidden;
 
   &::before {
     content: '';
     position: absolute;
-    width: 2000px;
-    height: 2000px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.1);
-    top: -10%;
-    right: 48%;
-    transform: translateY(-50%);
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.3);
     z-index: 0;
-    animation: move 18s infinite linear;
-  }
-
-  @keyframes move {
-    from {
-      transform: rotate(0deg) translateY(-50%);
-    }
-    to {
-      transform: rotate(360deg) translateY(-50%);
-    }
   }
 }
 
 .login-container {
-  background: rgba(255, 255, 255, 0.9);
-  backdrop-filter: blur(10px);
-  border-radius: 15px;
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
   width: 420px;
   padding: 40px;
   position: relative;
   z-index: 1;
-  transform: translateY(0);
   transition: all 0.3s ease;
 
   &:hover {
-    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.25);
   }
 }
 
@@ -222,15 +214,18 @@ export default {
     margin-bottom: 40px;
 
     .title {
-      font-size: 24px;
-      color: #333;
-      margin-bottom: 10px;
-      font-weight: 600;
+      font-size: 26px;
+      color: #fff;
+      margin-bottom: 12px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
     }
 
     .subtitle {
-      color: #666;
+      color: rgba(255, 255, 255, 0.85);
       font-size: 14px;
+      letter-spacing: 1px;
     }
   }
 }
@@ -244,22 +239,28 @@ export default {
     .el-input__inner {
       height: 45px;
       line-height: 45px;
-      border-radius: 8px;
-      border: 1px solid #dcdfe6;
-      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(5px);
       padding-left: 45px;
       transition: all 0.3s ease;
+      color: #fff;
+
+      &::placeholder {
+        color: rgba(255, 255, 255, 0.7);
+      }
 
       &:focus {
-        border-color: #764ba2;
-        box-shadow: 0 0 0 2px rgba(118, 75, 162, 0.2);
+        border-color: rgba(255, 255, 255, 0.6);
+        background: rgba(255, 255, 255, 0.15);
+        box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1);
       }
     }
   }
 
   .input-icon {
     font-size: 16px;
-    color: #666;
+    color: rgba(255, 255, 255, 0.8);
     height: 45px;
     width: 16px;
     margin: 0 15px;
@@ -276,12 +277,13 @@ export default {
 
   .login-code-img {
     height: 45px;
-    border-radius: 8px;
     cursor: pointer;
     transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.3);
 
     &:hover {
-      opacity: 0.8;
+      opacity: 0.85;
+      border-color: rgba(255, 255, 255, 0.5);
     }
   }
 }
@@ -292,14 +294,34 @@ export default {
   align-items: center;
   margin-bottom: 25px;
 
+  ::v-deep .el-checkbox {
+    color: #fff;
+    
+    .el-checkbox__inner {
+      background: rgba(255, 255, 255, 0.2);
+      border-color: rgba(255, 255, 255, 0.6);
+    }
+    
+    .el-checkbox__input.is-checked .el-checkbox__inner {
+      background: #1a5fb4;
+      border-color: #1a5fb4;
+    }
+    
+    .el-checkbox__label {
+      color: #fff;
+      font-weight: 500;
+    }
+  }
+
   .forgot-password {
-    color: #666;
+    color: #fff;
     text-decoration: none;
     font-size: 14px;
     transition: all 0.3s ease;
 
     &:hover {
-      color: #764ba2;
+      color: #fff;
+      text-decoration: underline;
     }
   }
 }
@@ -307,20 +329,21 @@ export default {
 .login-button {
   width: 100%;
   height: 45px;
-  border-radius: 8px;
   font-size: 16px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: #1a5fb4;
   border: none;
   color: white;
   transition: all 0.3s ease;
+  font-weight: 600;
+  letter-spacing: 4px;
 
   &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(118, 75, 162, 0.4);
+    background: #1c71d8;
+    box-shadow: 0 4px 12px rgba(26, 95, 180, 0.4);
   }
 
   &:active {
-    transform: translateY(0);
+    background: #155099;
   }
 }
 
@@ -328,17 +351,18 @@ export default {
   text-align: center;
   margin-top: 20px;
   font-size: 14px;
-  color: #666;
+  color: rgba(255, 255, 255, 0.8);
 
   .link-type {
-    color: #764ba2;
+    color: #fff;
     text-decoration: none;
     font-weight: 600;
     margin-left: 5px;
     transition: all 0.3s ease;
+    border-bottom: 1px solid transparent;
 
     &:hover {
-      text-decoration: underline;
+      border-bottom-color: #fff;
     }
   }
 }
