@@ -148,7 +148,7 @@
                         <div class="card-major">{{ item.majorName }}</div>
                       </div>
                       <div class="card-footer">
-                        <span class="score-label">2024分数线</span>
+                        <span class="score-label">分数线</span>
                         <span class="score-value">{{ item.minScore2024 }}分</span>
                       </div>
                     </el-card>
@@ -731,23 +731,23 @@ export default {
     background: #fff;
     border: 1px solid #e4e7ed;
     border-bottom: none;
-    
+
     .header-left {
       display: flex;
       align-items: center;
-      
+
       i {
         color: #1a5fb4;
         font-size: 18px;
         margin-right: 8px;
       }
-      
+
       .header-title {
         font-size: 16px;
         font-weight: 600;
         color: #303133;
       }
-      
+
       .header-subtitle {
         margin-left: 12px;
         font-size: 13px;
@@ -755,22 +755,22 @@ export default {
       }
     }
   }
-  
+
   .recommend-body {
     padding: 16px;
     background: #fff;
     border: 1px solid #e4e7ed;
   }
-  
+
   .recommend-item-card {
     position: relative;
     border: 1px solid #e4e7ed;
     margin-bottom: 12px;
-    
+
     ::v-deep .el-card__body {
       padding: 12px;
     }
-    
+
     .card-rank {
       position: absolute;
       top: 0;
@@ -785,10 +785,10 @@ export default {
       font-size: 12px;
       font-weight: 600;
     }
-    
+
     .card-body {
       padding-left: 16px;
-      
+
       .card-university {
         font-size: 12px;
         color: #606266;
@@ -797,7 +797,7 @@ export default {
         overflow: hidden;
         text-overflow: ellipsis;
       }
-      
+
       .card-major {
         font-size: 14px;
         color: #303133;
@@ -807,7 +807,7 @@ export default {
         text-overflow: ellipsis;
       }
     }
-    
+
     .card-footer {
       display: flex;
       align-items: center;
@@ -815,12 +815,12 @@ export default {
       margin-top: 10px;
       padding-top: 8px;
       border-top: 1px solid #ebeef5;
-      
+
       .score-label {
         font-size: 11px;
         color: #909399;
       }
-      
+
       .score-value {
         font-size: 14px;
         font-weight: 700;
@@ -828,7 +828,7 @@ export default {
       }
     }
   }
-  
+
   .no-recommend {
     text-align: center;
     padding: 30px 20px;
