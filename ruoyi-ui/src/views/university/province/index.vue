@@ -14,12 +14,12 @@
       <el-table-column label="省内高校总数" prop="numTotal" align="center"></el-table-column>
       <el-table-column label="985高校数量" prop="num985" align="center"></el-table-column>
       <el-table-column label="211高校数量" prop="num211" align="center"></el-table-column>
-      <el-table-column label="2024历史类最低投档线" prop="minScoreLiberal2024" align="center"></el-table-column>
-      <el-table-column label="2024理物理类最低投档线" prop="minScoreScience2024" align="center"></el-table-column>
-      <el-table-column label="2023历史类最低投档线" prop="minScoreLiberal2023" align="center"></el-table-column>
-      <el-table-column label="2023理物理类最低投档线" prop="minScoreScience2023" align="center"></el-table-column>
-      <el-table-column label="2022历史类最低投档线" prop="minScoreLiberal2022" align="center"></el-table-column>
-      <el-table-column label="2022理物理类最低投档线" prop="minScoreScience2022" align="center"></el-table-column>
+      <el-table-column label="2025历史类最低投档线" prop="minScoreLiberal2024" align="center"></el-table-column>
+      <el-table-column label="2025理物理类最低投档线" prop="minScoreScience2024" align="center"></el-table-column>
+      <el-table-column label="2024历史类最低投档线" prop="minScoreLiberal2023" align="center"></el-table-column>
+      <el-table-column label="2024理物理类最低投档线" prop="minScoreScience2023" align="center"></el-table-column>
+      <el-table-column label="2023历史类最低投档线" prop="minScoreLiberal2022" align="center"></el-table-column>
+      <el-table-column label="2023理物理类最低投档线" prop="minScoreScience2022" align="center"></el-table-column>
       <el-table-column label="操作" align="center" width="280px">
         <template #default="scope">
           <el-button type="info" size="mini" @click="handleView(scope.row)">查看</el-button>
@@ -55,22 +55,22 @@
         <el-form-item label="211高校数量">
           <el-input-number v-model="provinceForm.num211" :min="0"></el-input-number>
         </el-form-item>
-        <el-form-item label="2024历史类最低投档线">
+        <el-form-item label="2025历史类最低投档线">
           <el-input-number v-model="provinceForm.minScoreLiberal2024" :min="0"></el-input-number>
         </el-form-item>
-        <el-form-item label="2024物理类最低投档线">
+        <el-form-item label="2025物理类最低投档线">
           <el-input-number v-model="provinceForm.minScoreScience2024" :min="0"></el-input-number>
         </el-form-item>
-        <el-form-item label="2023历史类最低投档线">
+        <el-form-item label="2024历史类最低投档线">
           <el-input-number v-model="provinceForm.minScoreLiberal2023" :min="0"></el-input-number>
         </el-form-item>
-        <el-form-item label="2023物理类最低投档线">
+        <el-form-item label="2024物理类最低投档线">
           <el-input-number v-model="provinceForm.minScoreScience2023" :min="0"></el-input-number>
         </el-form-item>
-        <el-form-item label="2022历史类最低投档线">
+        <el-form-item label="2023历史类最低投档线">
           <el-input-number v-model="provinceForm.minScoreLiberal2022" :min="0"></el-input-number>
         </el-form-item>
-        <el-form-item label="2022物理类最低投档线">
+        <el-form-item label="2023物理类最低投档线">
           <el-input-number v-model="provinceForm.minScoreScience2022" :min="0"></el-input-number>
         </el-form-item>
       </el-form>
@@ -95,22 +95,22 @@
         <el-form-item label="211高校数量">
           <el-input v-model="viewProvinceForm.num211" disabled></el-input>
         </el-form-item>
-        <el-form-item label="2024历史类最低投档线">
+        <el-form-item label="2025历史类最低投档线">
           <el-input v-model="viewProvinceForm.minScoreLiberal2024" disabled></el-input>
         </el-form-item>
-        <el-form-item label="2024物理类最低投档线">
+        <el-form-item label="2025物理类最低投档线">
           <el-input v-model="viewProvinceForm.minScoreScience2024" disabled></el-input>
         </el-form-item>
-        <el-form-item label="2023历史类最低投档线">
+        <el-form-item label="2024历史类最低投档线">
           <el-input v-model="viewProvinceForm.minScoreLiberal2023" disabled></el-input>
         </el-form-item>
-        <el-form-item label="2023物理类最低投档线">
+        <el-form-item label="2024物理类最低投档线">
           <el-input v-model="viewProvinceForm.minScoreScience2023" disabled></el-input>
         </el-form-item>
-        <el-form-item label="2022历史类最低投档线">
+        <el-form-item label="2023历史类最低投档线">
           <el-input v-model="viewProvinceForm.minScoreLiberal2022" disabled></el-input>
         </el-form-item>
-        <el-form-item label="2022物理类最低投档线">
+        <el-form-item label="2023物理类最低投档线">
           <el-input v-model="viewProvinceForm.minScoreScience2022" disabled></el-input>
         </el-form-item>
       </el-form>
